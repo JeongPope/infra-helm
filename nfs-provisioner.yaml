@@ -1,0 +1,7 @@
+nfs:
+  server: { { Your NFS Server IP } }
+  path: { { Your NFS Server mounted Path } }
+
+storageClass:
+  name: nfsprov
+  defaultClass: true

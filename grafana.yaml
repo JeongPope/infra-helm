@@ -1,0 +1,44 @@
+replicas: 1
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: 80
+
+ingress:
+  enabled: true
+  ingressClassName: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: devops
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:ap-northeast-2:<account id>:certificate/<uid>"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/success-codes: 200,302
+
+  hosts:
+    - <your url>
+
+service:
+  type: NodePort
+
+persistence:
+  enabled: true
+  storageClassName: gp2
+  size: 25Gi
+
+adminUser: username
+adminPassword: passwd # 설정하지 않으면 rand passwd 가 생성된다.
+#
+# kubectl get secret --namespace prometheus grafana \
+# -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+#

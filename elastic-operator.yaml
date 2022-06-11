@@ -1,0 +1,6 @@
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9080"
+
+config:
+  metricsPort: 9080
