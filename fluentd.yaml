@@ -14,6 +14,19 @@ aggregator:
     enabled: true
     minReplicas: 1
     maxReplicas: 3
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 60
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 60
 
   resources:
     requests:
@@ -25,13 +38,13 @@ aggregator:
 
   extraEnvVars:
     - name: ELASTICSEARCH_HOST
-      value: eck-elasticsearch-es-http.monitoring.svc
+      value: eck-elasticsearch-es-http.elastic.svc
     - name: ELASTICSEARCH_PORT
       value: "9200"
     - name: ELASTICSEARCH_USER
       value: "elastic"
     - name: ELASTICSEARCH_PASSWORD
-      value: "changeme" # need to change
+      value: "changeme1!" # need to change
 
   configMapFiles:
     fluentd.conf: |
@@ -91,7 +104,6 @@ aggregator:
 
       # Send the logs to the standard output
       <match kube.**>
-        # @type stdout
         @type elasticsearch
         include_tag_key true
         host "#{ENV['ELASTICSEARCH_HOST']}"
@@ -100,7 +112,8 @@ aggregator:
         password "#{ENV['ELASTICSEARCH_PASSWORD']}"
 
         logstash_format true
-        logstash_prefix fluentd
+        logstash_prefix workspace
+        logstash_dateformat %Y%m%d
 
         reload_connections false
         reconnect_on_error true

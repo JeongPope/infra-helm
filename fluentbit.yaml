@@ -6,7 +6,7 @@
 
 env:
   - name: FLUENTD_HOST
-    value: fluentd-aggregator.monitoring.svc
+    value: fluentd-aggregator.elastic.svc
   - name: FLUENTD_PORT
     value: "24224"
 flush: 1
@@ -71,7 +71,7 @@ config:
         Name        record_modifier
         Match       kube.*
         Remove_key  labels
-        Remove_key  container_image
+        # Remove_key  container_image
         Remove_key  container_hash
         Remove_key  docker_id
         Remove_key  pod_id
