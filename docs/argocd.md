@@ -1,8 +1,4 @@
 # ArgoCD
-* 
-* 
-* 
-
 ### Helm Chart
 ```bash
 $ helm repo add argo https://argoproj.github.io/argo-helm
